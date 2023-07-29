@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  lables:
+    app: django-postgres
+apec:
+selector:
+  matchlabels:
+    app: django
+    tier: postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      lables:
+        app: django
+        tier: postgres
+      
