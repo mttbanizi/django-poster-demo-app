@@ -3,11 +3,11 @@ kind: PersistentVolumeClaim
 metadata:
   name: django-postgres-pvc
   labels:
-    app:django
+    app: django
 spec:
   accessModes:
     - ReadWriteOnce
-  reasources:
+  resources:
     requests:
       storage: 10Gi
 
@@ -30,11 +30,12 @@ spec:
       labels:
         app: django
         tier: postgres
-  volumes:
-    - name: postgres-data
-      persistentVolumeClaim:
-        claimName: django-postgres-pvc
     spec:
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: django-postgres-pvc
+      
       containers:
         - image: postgres:latest
           name: postgres
