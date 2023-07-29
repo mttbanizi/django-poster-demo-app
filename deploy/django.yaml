@@ -15,7 +15,7 @@ spec:
 ---
 
 apiVersion: v1
-kind:PersistentVolumeClaim
+kind: PersistentVolumeClaim
 metadata:
   name: django-app-pvc
   labels:
@@ -34,8 +34,12 @@ kind: Deployment
 metadata:
   name: django
   labels:
-    app:django
-    tier: app
+    app: django
+spec:
+  selector:
+    matchLabels:
+      app: django
+      tier: app
   strategy: 
     type: Recreate
   template:
@@ -44,9 +48,9 @@ metadata:
         app: django
         tier: app
     spec:
-      volume:
+      volumes:
         - name: django-app-data
-          persistentVolumeClai:
+          persistentVolumeClaim:
             claimName: django-app-pvc
       containers:
         - image: django-app:latest
@@ -75,7 +79,8 @@ metadata:
                   name: django
                   key: secret
         - image: django-proxy:latest
-          imagePullPolicy: Nevername: proxy
+          imagePullPolicy: Never
+          name: proxy
           ports:
             - containerPort: 8000
               name: proxy
@@ -86,6 +91,6 @@ metadata:
             - name: APP_HOST
               value: '127.0.0.1'
             - name: APP_PORT
-              value: 8080
+              value: '8080'
 
 
